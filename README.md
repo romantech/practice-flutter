@@ -1,4 +1,4 @@
-# toonflix
+# practice-flutter
 
 A new Flutter project.
 
