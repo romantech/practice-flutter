@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
-import 'screens/screens.dart';
+import 'package:flutter/widgets.dart';
+import 'package:practice_flutter/screens/life_cycle.dart';
 
 void main() {
-  runApp(const CardList());
+  runApp(const LifeCycle());
 }
