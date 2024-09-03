@@ -17,16 +17,16 @@ class _HomeScreenState extends State<HomeScreen> {
   late Timer timer;
 
   void onTick(Timer timer) {
-    if (totalSeconds == 0) {
-      setState(() {
+    setState(() {
+      if (totalSeconds == 0) {
         totalPomodoros++;
         isRunning = false;
         totalSeconds = twentyFiveMinutes;
-      });
-      timer.cancel();
-    } else {
-      setState(() => totalSeconds--);
-    }
+        timer.cancel();
+      } else {
+        totalSeconds--;
+      }
+    });
   }
 
   void toggleIsRunning() {
@@ -44,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String format(int sec) {
-    var duration = Duration(seconds: sec);
+    var duration =
+        Duration(seconds: sec); // 0:24:59.000000, 0:24:58.000000, ...
     var formatted = duration.toString().substring(2, 7);
     return formatted;
   }
