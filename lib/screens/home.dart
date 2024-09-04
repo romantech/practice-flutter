@@ -29,18 +29,20 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void toggleIsRunning() {
-    isRunning = !isRunning;
-  }
-
   void onStartPressed() {
+    if (isRunning) return;
     timer = Timer.periodic(const Duration(seconds: 1), onTick);
-    setState(toggleIsRunning);
+    setState(() => isRunning = true);
   }
 
   void onPausePressed() {
     timer.cancel();
-    setState(toggleIsRunning);
+    setState(() => isRunning = false);
+  }
+
+  void onResetPressed() {
+    onPausePressed();
+    totalSeconds = twentyFiveMinutes;
   }
 
   String format(int sec) {
@@ -71,15 +73,25 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Flexible(
             flex: 2,
-            child: Center(
-              child: IconButton(
-                iconSize: 120,
-                color: Theme.of(context).cardColor,
-                icon: Icon(isRunning
-                    ? Icons.pause_circle_outline
-                    : Icons.play_circle_outline),
-                onPressed: isRunning ? onPausePressed : onStartPressed,
-              ),
+            fit: FlexFit.tight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  iconSize: 120,
+                  color: Theme.of(context).cardColor,
+                  icon: Icon(isRunning
+                      ? Icons.pause_circle_outline
+                      : Icons.play_circle_outline),
+                  onPressed: isRunning ? onPausePressed : onStartPressed,
+                ),
+                IconButton(
+                  iconSize: 120,
+                  color: Theme.of(context).cardColor,
+                  icon: const Icon(Icons.restart_alt),
+                  onPressed: onResetPressed,
+                ),
+              ],
             ),
           ),
           Flexible(
