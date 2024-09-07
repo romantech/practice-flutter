@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:practice_flutter/screens/pomodoro.dart';
+import 'package:practice_flutter/screens/home_screen.dart';
+import 'package:practice_flutter/services/api_service.dart';
 
 void main() {
+  ApiService().getTodayToons();
   runApp(const App());
 }
 
 class App extends StatelessWidget {
+  // 위젯은 key 라는 걸 가지고 있고, ID 처럼 쓰임
+  // Flutter는 ID를 식별하기 위해 ID를 사용함
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xffE7626C),
-        textTheme: const TextTheme(
-          headlineLarge: TextStyle(
-            color: Color(0xff232B55),
-          ),
-        ),
-        cardColor: const Color(0xffF4EDDB),
-      ),
-      home: const PomodoroScreen(),
+    return const MaterialApp(
+      home: HomeScreen(),
     );
   }
 }
