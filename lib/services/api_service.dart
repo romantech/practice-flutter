@@ -9,7 +9,7 @@ class ApiService {
   static const String today = "today";
 
   // 오늘의 웹툰 목록을 불러오는 메서드. async 키워드를 붙였기 때문에 Future를 반환한다.
-  Future<List<WebtoonModel>> getTodayToons() async {
+  static Future<List<WebtoonModel>> getTodayToons() async {
     try {
       // baseUrl과 today를 사용해 HTTPS URI 생성
       // Uri.parse(...)로도 가능(이땐 주소에 프로토콜까지 모두 명시)
@@ -20,7 +20,7 @@ class ApiService {
       if (response.statusCode == 200) {
         // String으로 받은 응답 데이터를 JSON으로 디코딩. json.decode(...)로도 가능
         final List<dynamic> webtoons = jsonDecode(response.body);
-        // 디코딩된 각 JSON 데이터를 WebtoonModel 객체로 매핑하여 리스트로 반환
+        // 디코딩된 각 JSON 데이터를 WebtoonModel 인스턴스로 매핑하여 리스트로 반환
         return webtoons.map((data) => WebtoonModel.fromJson(data)).toList();
       } else {
         // 상태 코드가 200이 아닐 경우, 예외 발생
