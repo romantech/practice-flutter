@@ -18,10 +18,9 @@ class ApiService {
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
-        // JSON 응답을 디코딩하여 웹툰 데이터 리스트로 변환
-        // json.decode(...)로도 가능
+        // String으로 받은 응답 데이터를 JSON으로 디코딩. json.decode(...)로도 가능
         final List<dynamic> webtoons = jsonDecode(response.body);
-        // 각 데이터를 WebtoonModel로 매핑하여 리스트로 반환
+        // 디코딩된 각 JSON 데이터를 WebtoonModel 객체로 매핑하여 리스트로 반환
         return webtoons.map((data) => WebtoonModel.fromJson(data)).toList();
       } else {
         // 상태 코드가 200이 아닐 경우, 예외 발생
