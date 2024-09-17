@@ -28,19 +28,11 @@ class HomeScreen extends StatelessWidget {
           // snapshot은 future의 상태라고 보면 됨
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ListView.separated(
-                scrollDirection: Axis.horizontal,
-                // 아이템 총 개수 지정
-                itemCount: snapshot.data!.length,
-                // 화면에 노출된 아이템을 생성할 때 호출되는 함수
-                itemBuilder: (BuildContext context, int index) {
-                  var webtoon = snapshot.data![index];
-                  return Text(webtoon.title);
-                },
-                // 화면에 노출된 구분선을 생성할 때 호출되는 함수
-                separatorBuilder: (BuildContext context, int index) {
-                  return const SizedBox(width: 10);
-                },
+              return Column(
+                children: [
+                  const SizedBox(height: 50),
+                  Expanded(child: makeList(snapshot)),
+                ],
               );
             }
             return const Center(
@@ -48,5 +40,55 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ));
+  }
+
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 20,
+      ),
+      scrollDirection: Axis.horizontal,
+      // 아이템 총 개수 지정
+      itemCount: snapshot.data!.length,
+      // 화면에 노출된 아이템을 생성할 때 호출되는 함수
+      itemBuilder: (BuildContext context, int index) {
+        var webtoon = snapshot.data![index];
+        return Column(
+          children: [
+            Container(
+              width: 250,
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 15,
+                    offset: const Offset(10, 10),
+                    color: Colors.black.withOpacity(0.5),
+                  )
+                ],
+              ),
+              // 네트워크 상의 이미지를 불러올 때 Image.network 사용
+              // 모든 네트워크 이미지는 HTTP 헤더와 관계없이 캐시됨
+              child: Image.network(webtoon.thumb, headers: const {
+                // HTTP 요청 시 Referer 헤더 추가
+                'Referer': 'https://comic.naver.com',
+              }),
+            ),
+            const SizedBox(height: 20),
+            Text(webtoon.title,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                )),
+          ],
+        );
+      },
+      // 화면에 노출된 구분선을 생성할 때 호출되는 함수
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(width: 40);
+      },
+    );
   }
 }
