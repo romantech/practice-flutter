@@ -69,7 +69,10 @@ class HomeScreen extends StatelessWidget {
                   )
                 ],
               ),
+              // 네트워크 상의 이미지를 불러올 때 Image.network 사용
+              // 모든 네트워크 이미지는 HTTP 헤더와 관계없이 캐시됨
               child: Image.network(webtoon.thumb, headers: const {
+                // HTTP 요청 시 Referer 헤더 추가
                 'Referer': 'https://comic.naver.com',
               }),
             ),
