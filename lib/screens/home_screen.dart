@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:practice_flutter/services/api_service.dart';
 
 import '../models/webtoon_model.dart';
+import '../widgets/webtoon_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -54,35 +55,10 @@ class HomeScreen extends StatelessWidget {
       // 화면에 노출된 아이템을 생성할 때 호출되는 함수
       itemBuilder: (BuildContext context, int index) {
         var webtoon = snapshot.data![index];
-        return Column(
-          children: [
-            Container(
-              width: 250,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    blurRadius: 15,
-                    offset: const Offset(10, 10),
-                    color: Colors.black.withOpacity(0.5),
-                  )
-                ],
-              ),
-              // 네트워크 상의 이미지를 불러올 때 Image.network 사용
-              // 모든 네트워크 이미지는 HTTP 헤더와 관계없이 캐시됨
-              child: Image.network(webtoon.thumb, headers: const {
-                // HTTP 요청 시 Referer 헤더 추가
-                'Referer': 'https://comic.naver.com',
-              }),
-            ),
-            const SizedBox(height: 20),
-            Text(webtoon.title,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                )),
-          ],
+        return Webtoon(
+          title: webtoon.title,
+          id: webtoon.id,
+          thumb: webtoon.thumb,
         );
       },
       // 화면에 노출된 구분선을 생성할 때 호출되는 함수
