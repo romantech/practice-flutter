@@ -25,9 +25,9 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   initState() {
     super.initState();
+    // widget 접근자 속성을 통해 부모 위젯의 프로퍼티 접근
     webtoon = ApiService.getToonById(widget.id);
     episodes = ApiService.getLatestEpisodesById(widget.id);
-    print(webtoon);
   }
 
   @override

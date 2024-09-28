@@ -7,7 +7,7 @@ class LifeCycle extends StatefulWidget {
   State<LifeCycle> createState() => _LifeCycleState();
 }
 
-// State
+// State 클래스
 class _LifeCycleState extends State<LifeCycle> {
   bool showTitle = true;
   List<int> numbers = [];
