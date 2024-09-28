@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:practice_flutter/models/webtoon_episode_model.dart';
 
-class DetailScreen extends StatelessWidget {
+import '../models/webtoon_detail_model.dart';
+import '../services/api_service.dart';
+
+class DetailScreen extends StatefulWidget {
   final String title, thumb, id;
 
   const DetailScreen({
@@ -11,6 +15,22 @@ class DetailScreen extends StatelessWidget {
   });
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late Future<WebtoonDetailModel> webtoon;
+  late Future<List<WebtoonEpisodeModel>> episodes;
+
+  @override
+  initState() {
+    super.initState();
+    webtoon = ApiService.getToonById(widget.id);
+    episodes = ApiService.getLatestEpisodesById(widget.id);
+    print(webtoon);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
@@ -18,7 +38,7 @@ class DetailScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           foregroundColor: Colors.green,
           title: Text(
-            title,
+            widget.title,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
@@ -34,7 +54,7 @@ class DetailScreen extends StatelessWidget {
                 // 두 화면의 공통 요소에 전환 애니메이션을 적용해 시각적 연결을 제공하는 Hero 위젯
                 Hero(
                   // 두 화면의 Here 위젯 tag 값을 동일하게 지정한다
-                  tag: id,
+                  tag: widget.id,
                   child: Container(
                     width: 250,
                     clipBehavior: Clip.hardEdge,
@@ -50,7 +70,7 @@ class DetailScreen extends StatelessWidget {
                     ),
                     // 네트워크 상의 이미지를 불러올 때 Image.network 사용
                     // 모든 네트워크 이미지는 HTTP 헤더와 관계없이 캐시됨
-                    child: Image.network(thumb, headers: const {
+                    child: Image.network(widget.thumb, headers: const {
                       // HTTP 요청 시 Referer 헤더 추가
                       'Referer': 'https://comic.naver.com',
                     }),
