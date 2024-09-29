@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/webtoon_detail_model.dart';
 import '../models/webtoon_episode_model.dart';
@@ -22,6 +23,23 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  late SharedPreferences prefs;
+  static const likedToonsPrefsKey = 'likedToons';
+  bool isLiked = false;
+
+  Future<void> initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final likedToons = prefs.getStringList(likedToonsPrefsKey);
+
+    // 사용자가 처음으로 앱을 실행할 때
+    if (likedToons == null) {
+      await prefs.setStringList(likedToonsPrefsKey, []);
+    } else {
+      setState(() {
+        isLiked = likedToons.contains(widget.id);
+      });
+    }
+  }
 
   @override
   initState() {
@@ -29,6 +47,23 @@ class _DetailScreenState extends State<DetailScreen> {
     // widget 접근자 속성을 통해 부모 위젯의 프로퍼티 접근
     webtoon = ApiService.getToonById(widget.id);
     episodes = ApiService.getLatestEpisodesById(widget.id);
+    initPrefs();
+  }
+
+  void onHeartTab() async {
+    final likedToons = prefs.getStringList(likedToonsPrefsKey);
+    if (likedToons == null) return;
+
+    if (isLiked) {
+      likedToons.remove(widget.id);
+    } else {
+      likedToons.add(widget.id);
+    }
+
+    await prefs.setStringList(likedToonsPrefsKey, likedToons);
+    setState(() {
+      isLiked = !isLiked;
+    });
   }
 
   @override
@@ -38,6 +73,11 @@ class _DetailScreenState extends State<DetailScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           foregroundColor: Colors.green,
+          actions: [
+            IconButton(
+                onPressed: onHeartTab,
+                icon: Icon(isLiked ? Icons.favorite : Icons.favorite_outline))
+          ],
           title: Text(
             widget.title,
             style: const TextStyle(
