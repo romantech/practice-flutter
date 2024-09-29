@@ -20,6 +20,11 @@ class Episode extends StatelessWidget {
       'titleId': webtoonId,
       'no': episode.id,
     });
+    // 아래 방식으로도 가능
+    // final uri = Uri.https('comic.naver.com', 'webtoon/detail', {
+    //   'titleId': webtoonId,
+    //   'no': episode.id,
+    // });
     await launchUrl(uri);
   }
 
