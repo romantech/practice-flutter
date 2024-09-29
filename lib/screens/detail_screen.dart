@@ -33,7 +33,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
     // 사용자가 처음으로 앱을 실행할 때
     if (likedToons == null) {
-      await prefs.setStringList(likedToonsPrefsKey, []);
+      prefs.setStringList(likedToonsPrefsKey, []);
     } else {
       setState(() {
         isLiked = likedToons.contains(widget.id);
@@ -60,7 +60,7 @@ class _DetailScreenState extends State<DetailScreen> {
       likedToons.add(widget.id);
     }
 
-    await prefs.setStringList(likedToonsPrefsKey, likedToons);
+    prefs.setStringList(likedToonsPrefsKey, likedToons);
     setState(() {
       isLiked = !isLiked;
     });
