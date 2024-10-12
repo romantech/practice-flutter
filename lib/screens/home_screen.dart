@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
           thumb: webtoon.thumb,
         );
       },
-      // 화면에 노출된 구분선을 생성할 때 호출되는 함수
+      // 화면에 노출된 아이템 사이에 구분선을 생성할 때 호출
       separatorBuilder: (BuildContext context, int index) {
         return const SizedBox(width: 40);
       },
